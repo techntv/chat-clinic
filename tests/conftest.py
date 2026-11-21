@@ -4,6 +4,20 @@ from django.test import Client
 from clinic.models import Conversation, Tenant
 
 
+@pytest.fixture(autouse=True)
+def _hermetic_settings(settings) -> None:
+    """Tests must not depend on the developer's shell or .env."""
+    settings.CLAUDE_MODEL = "claude-haiku-5-5"
+    settings.CLAUDE_EFFORT = "low"
+    settings.CLAUDE_MAX_TOKENS = 2048
+    settings.CLAUDE_MAX_TOOL_ROUNDS = 4
+    settings.CLAUDE_HISTORY_MESSAGES = 12
+    settings.FB_VERIFY_TOKEN = "verify-me"
+    settings.FB_APP_SECRET = "app-secret"
+    settings.GRAPH_API_VERSION = "v24.0"
+    settings.BACKGROUND_SYNC = True
+
+
 @pytest.fixture
 def client() -> Client:
     return Client()
