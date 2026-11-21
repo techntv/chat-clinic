@@ -11,7 +11,6 @@ from django.conf import settings
 
 from clinic.ai.prompt_builder import PromptBuilder, Turn
 from clinic.dto import ReplyResult, ToolResult
-from clinic.knowledge.base import KnowledgeSourceError
 from clinic.models import Tenant
 from clinic.tools.registry import ToolRegistry
 
@@ -86,7 +85,7 @@ class ReplyEngine:
         error: Exception | None = None
         try:
             text = self._run_loop(tenant, history, usage, tool_calls)
-        except (anthropic.APIError, KnowledgeSourceError) as exc:
+        except Exception as exc:  # API, Sheet, config or bug: the customer still gets a reply
             error = exc
             text = None
         result = ReplyResult(

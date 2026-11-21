@@ -36,11 +36,16 @@ def normalize_vi(text: str) -> str:
     return _SPACES.sub(" ", text).strip()
 
 
-def strip_accents(text: str) -> str:
-    """'Tẩy trắng răng' -> 'tay trang rang'. Also maps đ -> d."""
-    decomposed = unicodedata.normalize("NFD", normalize_vi(text))
+def remove_diacritics(text: str) -> str:
+    """Lowercase, drop Vietnamese marks, keep punctuation: 'Đặt lịch!' -> 'dat lich!'."""
+    decomposed = unicodedata.normalize("NFD", text.lower())
     without_marks = "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
     return without_marks.replace("đ", "d")
+
+
+def strip_accents(text: str) -> str:
+    """'Tẩy trắng răng?' -> 'tay trang rang' (normalize_vi + remove_diacritics)."""
+    return remove_diacritics(normalize_vi(text))
 
 
 _PLAIN_STOPWORDS = frozenset(strip_accents(w) for w in _STOPWORDS)

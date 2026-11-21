@@ -155,3 +155,9 @@ def test_every_call_is_logged(tenant, caplog):
     assert "input_tokens=200" in line
     assert "output_tokens=40" in line
     assert "get_price({'service': 'implant'})" in line
+
+
+@pytest.mark.django_db
+def test_unexpected_error_returns_fallback(tenant):
+    claude = FakeClaude(TypeError("Could not resolve authentication method"))
+    assert make_engine(claude).reply(tenant, HISTORY).is_fallback
