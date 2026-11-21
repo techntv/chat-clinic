@@ -1,0 +1,15 @@
+service,price_vnd,duration,notes
+Khám và tư vấn,0,15 phút,Miễn phí khi khám lần đầu
+Chụp phim X-quang toàn hàm,150000,10 phút,
+Cạo vôi răng,300000,30 phút,Nên làm 6 tháng một lần
+Trám răng thẩm mỹ,400000,30 phút,Giá cho 1 răng
+Tẩy trắng răng tại phòng khám,2500000,60 phút,Công nghệ đèn Laser; có thể ê buốt nhẹ 1-2 ngày
+Tẩy trắng răng tại nhà,1200000,2 tuần,Gồm 1 bộ máng và 4 tuýp thuốc
+Lấy tủy răng,1000000,2 buổi,Giá cho 1 răng; chưa gồm bọc sứ
+Nhổ răng khôn,1500000 - 3000000,45 - 60 phút,Tùy độ khó; cần chụp phim trước khi nhổ
+Bọc răng sứ Titan,2500000,2 buổi,Giá cho 1 răng; bảo hành 5 năm
+Bọc răng sứ Zirconia,5000000,2 buổi,Giá cho 1 răng; bảo hành 10 năm
+Dán sứ Veneer,7000000,2 buổi,Giá cho 1 răng
+Niềng răng mắc cài kim loại,30000000,18 - 24 tháng,Hỗ trợ trả góp 0%
+Niềng răng trong suốt Invisalign,90000000,12 - 18 tháng,Hỗ trợ trả góp 0%
+Cấy ghép Implant,18000000,3 - 6 tháng,Giá cho 1 trụ; chưa gồm mão sứ
