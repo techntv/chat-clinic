@@ -97,3 +97,23 @@ def best_matches[T](
         return []
     cutoff = max(min_score, scored[0].score - margin)
     return [m for m in scored if m.score >= cutoff][:limit]
+
+
+def split_message(text: str, limit: int) -> list[str]:
+    """Split a reply into chunks of at most `limit` characters for channels with a size cap.
+
+    Prefers to cut at a blank line, then a newline, then a sentence end, then a space.
+    """
+    text = text.strip()
+    chunks: list[str] = []
+    while len(text) > limit:
+        window = text[:limit]
+        cut = max(window.rfind(sep) for sep in ("\n\n", "\n", ". ", "! ", "? "))
+        if cut <= 0:
+            cut = window.rfind(" ")
+        cut = cut + 1 if cut > 0 else limit
+        chunks.append(text[:cut].strip())
+        text = text[cut:].strip()
+    if text:
+        chunks.append(text)
+    return chunks

@@ -109,3 +109,46 @@ def anthropic_connection_error() -> anthropic.APIConnectionError:
     return anthropic.APIConnectionError(
         request=httpx2.Request("POST", "https://api.anthropic.com/v1/messages")
     )
+
+
+# --- Messenger -------------------------------------------------------------------------------
+
+
+def messenger_text_event(
+    text: str = "Xin chào",
+    mid: str = "m_1",
+    page_id: str = "PAGE_1",
+    psid: str = "PSID_1",
+) -> dict[str, Any]:
+    return messenger_payload(
+        page_id,
+        {
+            "sender": {"id": psid},
+            "recipient": {"id": page_id},
+            "message": {"mid": mid, "text": text},
+        },
+    )
+
+
+def messenger_payload(page_id: str, *events: dict[str, Any]) -> dict[str, Any]:
+    return {"object": "page", "entry": [{"id": page_id, "time": 1, "messaging": list(events)}]}
+
+
+class FakeChannel:
+    """A ChannelAdapter stand-in that records what would be sent."""
+
+    channel = "messenger"
+
+    def __init__(self) -> None:
+        self.sent: list[tuple[str, str]] = []
+        self.typing: list[str] = []
+        self.fail_send = False
+
+    def send_text(self, conversation, text: str) -> list[str]:
+        if self.fail_send:
+            raise RuntimeError("graph down")
+        self.sent.append((conversation.external_user_id, text))
+        return [f"out_{len(self.sent)}"]
+
+    def send_typing(self, conversation) -> None:
+        self.typing.append(conversation.external_user_id)

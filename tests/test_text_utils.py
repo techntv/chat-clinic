@@ -2,7 +2,7 @@ import unicodedata
 
 import pytest
 
-from clinic.text_utils import best_matches, normalize_vi, similarity, strip_accents
+from clinic.text_utils import best_matches, normalize_vi, similarity, split_message, strip_accents
 
 
 def test_normalize_vi_lowercases_and_strips_punctuation():
@@ -57,3 +57,23 @@ def test_accented_query_does_not_match_accent_collisions():
 
 def test_filler_words_are_ignored():
     assert similarity("cho em hỏi giá cạo vôi bao nhiêu ạ", "Cạo vôi răng") == 100
+
+
+def test_split_message_short_text_is_one_chunk():
+    assert split_message("Dạ em chào chị ạ", 2000) == ["Dạ em chào chị ạ"]
+
+
+def test_split_message_prefers_paragraphs():
+    text = "a" * 10 + "\n\n" + "b" * 10
+    assert split_message(text, 15) == ["a" * 10, "b" * 10]
+
+
+def test_split_message_hard_cuts_without_spaces():
+    assert split_message("x" * 25, 10) == ["x" * 10, "x" * 10, "x" * 5]
+
+
+def test_split_message_respects_limit():
+    text = " ".join(["Tẩy trắng răng."] * 400)
+    chunks = split_message(text, 2000)
+    assert all(len(c) <= 2000 for c in chunks)
+    assert " ".join(chunks) == text
