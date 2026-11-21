@@ -1,6 +1,7 @@
 import pytest
 from django.test import Client
 
+from clinic import wiring
 from clinic.models import Conversation, Tenant
 
 
@@ -16,6 +17,7 @@ def _hermetic_settings(settings) -> None:
     settings.FB_APP_SECRET = "app-secret"
     settings.GRAPH_API_VERSION = "v24.0"
     settings.BACKGROUND_SYNC = True
+    wiring.reset()
 
 
 @pytest.fixture
