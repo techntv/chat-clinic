@@ -41,3 +41,19 @@ def test_best_matches_drops_unrelated_items():
 
 def test_best_matches_empty_query():
     assert best_matches("  ?? ", ["Cạo vôi răng"], key=str) == []
+
+
+def test_best_matches_drops_items_far_below_the_best():
+    items = ["Bọc răng sứ Titan", "Tẩy trắng răng tại nhà"]
+    assert [m.item for m in best_matches("răng sứ", items, key=str)] == ["Bọc răng sứ Titan"]
+
+
+def test_accented_query_does_not_match_accent_collisions():
+    # "bảo" and "bao" are the same once accents are stripped.
+    items = ["Phòng khám có nhận bảo hiểm không?", "Tẩy trắng răng giữ được bao lâu?"]
+    matches = best_matches("bảo hiểm", items, key=str)
+    assert [m.item for m in matches] == ["Phòng khám có nhận bảo hiểm không?"]
+
+
+def test_filler_words_are_ignored():
+    assert similarity("cho em hỏi giá cạo vôi bao nhiêu ạ", "Cạo vôi răng") == 100
