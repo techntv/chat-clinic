@@ -76,11 +76,6 @@ def test_malformed_json_is_bad_request(client, handled):
 
 
 def test_status_events_return_200_without_work(client, handled):
-    payload = {
-        "object": "page",
-        "entry": [
-            {"id": "PAGE_1", "messaging": [{"sender": {"id": "U"}, "read": {"watermark": 1}}]}
-        ],
-    }
+    payload = messenger_payload("PAGE_1", {"sender": {"id": "U"}, "read": {"watermark": 1}})
     assert signed_post(client, payload).status_code == 200
     assert handled == []
