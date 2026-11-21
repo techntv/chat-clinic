@@ -1,0 +1,39 @@
+[project]
+name = "chat-clinic"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=2.12.0",
+    "django>=5.2,<6",
+    "django-environ>=0.14.0",
+    "django-ninja>=1.8.0",
+    "gspread>=6.2.1",
+    "gunicorn>=27.0.1",
+    "psycopg[binary]>=3.3.9",
+    "rapidfuzz>=3.14.6",
+    "requests>=2.34.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "pytest-django>=4.14.0",
+    "responses>=0.26.3",
+    "ruff>=0.17.6",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # Vietnamese text has "ambiguous" unicode by design
+
+[tool.ruff.lint.per-file-ignores]
+"clinic/migrations/*" = ["E501", "RUF012"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]
+addopts = "-q"

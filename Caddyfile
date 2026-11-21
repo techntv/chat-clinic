@@ -1,0 +1,14 @@
+# Caddy gets and renews a Let's Encrypt certificate for {$DOMAIN} automatically.
+# With DOMAIN=localhost it uses its own local CA instead.
+{$DOMAIN} {
+	encode gzip
+
+	handle_path /static/* {
+		root * /srv/static
+		file_server
+	}
+
+	handle {
+		reverse_proxy web:8000
+	}
+}
